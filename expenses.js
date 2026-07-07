@@ -15,7 +15,7 @@ function addExpense() {
     return;
   }
 
-  if (isNaN(amount) || amount <= 0) {
+  if (Number.isNaN(amount) || amount <= 0) {
     alert("Enter a valid amount");
     return;
   }
@@ -50,7 +50,6 @@ function addExpense() {
     createdAt: new Date().toISOString(),
   });
 
-  // reset form fields
   const amountEl = document.getElementById("expenseAmount");
   const noteEl = document.getElementById("expenseNote");
   const splitTypeEl = document.getElementById("splitType");
@@ -61,7 +60,9 @@ function addExpense() {
 
   handleSplitTypeChange();
 
-  document.querySelectorAll(".customPerson").forEach((c) => (c.checked = false));
+  document.querySelectorAll(".customPerson").forEach((c) => {
+    c.checked = false;
+  });
 
   displayExpenses();
   calculateSummary();
@@ -84,8 +85,7 @@ function displayExpenses() {
 
   filtered.forEach((exp) => {
     const splitLabel =
-      exp.splitType === "group" ? "Whole Group" :
-      exp.splitType === "self" ? "Only Me" : "Custom";
+      exp.splitType === "group" ? "Whole Group" : exp.splitType === "self" ? "Only Me" : "Custom";
 
     tbody.innerHTML += `
       <tr>

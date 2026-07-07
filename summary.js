@@ -4,20 +4,19 @@ function calculateSummary() {
   summary.innerHTML = "";
 
   const ledger = {};
-  people.forEach((p) => (ledger[p] = 0));
+  people.forEach((p) => {
+    ledger[p] = 0;
+  });
 
   let groupExpenseTotal = 0;
 
   expenses.forEach((exp) => {
-    // payer paid full
     ledger[exp.payer] += exp.amount;
 
-    // each participant owes their share
     exp.splitBetween.forEach((person) => {
       ledger[person] -= exp.perHead;
     });
 
-    // group shared total only (exclude self-only)
     if (exp.splitBetween.length > 1) {
       groupExpenseTotal += exp.amount;
     }
@@ -28,9 +27,7 @@ function calculateSummary() {
       .filter((e) => e.payer === person)
       .reduce((sum, e) => sum + e.amount, 0);
 
-    const spend = expenses.reduce((sum, e) => {
-      return sum + (e.splitBetween.includes(person) ? e.perHead : 0);
-    }, 0);
+    const spend = expenses.reduce((sum, e) => sum + (e.splitBetween.includes(person) ? e.perHead : 0), 0);
 
     const balance = ledger[person];
 

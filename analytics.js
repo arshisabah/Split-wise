@@ -3,22 +3,21 @@ function renderCharts() {
   renderCategoryChart();
 }
 
-// Spend by PERSON (consumption based on split), not who paid
 function renderPersonChart() {
   const canvas = document.getElementById("personChart");
   if (!canvas || typeof Chart === "undefined") return;
 
   const spendByPerson = {};
-  people.forEach((p) => (spendByPerson[p] = 0));
+  people.forEach((p) => {
+    spendByPerson[p] = 0;
+  });
 
   expenses.forEach((e) => {
     const members = Array.isArray(e.splitBetween) ? e.splitBetween : [];
     if (!members.length) return;
 
     const perHead =
-      typeof e.perHead === "number" && !Number.isNaN(e.perHead)
-        ? e.perHead
-        : e.amount / members.length;
+      typeof e.perHead === "number" && !Number.isNaN(e.perHead) ? e.perHead : e.amount / members.length;
 
     members.forEach((member) => {
       if (spendByPerson[member] === undefined) spendByPerson[member] = 0;
